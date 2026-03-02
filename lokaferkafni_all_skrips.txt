@@ -1,0 +1,67 @@
+LOKAVERKEFNI – EINFALDAR SKIPANIR
+PUNKTUR 2 – Notendur og hópar
+
+# Búa til hópa
+net localgroup Innkaup /add
+net localgroup Sala /add
+net localgroup "Yfirstjórn" /add
+net localgroup Allir /add
+
+# Búa til notendur
+net user GudEir * /add
+net user Notandi2 * /add
+net user Notandi3 * /add
+
+# Setja notendur í hópa
+net localgroup Innkaup GudEir /add
+net localgroup Sala Notandi2 /add
+net localgroup "Yfirstjórn" Notandi3 /add
+
+# Skoða
+net user
+net localgroup
+
+PUNKTUR 3 – Möppur og réttindi
+
+# Búa til möppu
+mkdir C:\Gögn
+
+# Búa til undirmöppur
+mkdir C:\Gögn\Innkaup
+mkdir C:\Gögn\Sala
+mkdir C:\Gögn\Yfirstjorn
+mkdir C:\Gögn\Sameign
+
+# Búa til textaskrár
+echo Innkaup > C:\Gögn\Innkaup\Innkaup.txt
+echo Sala > C:\Gögn\Sala\Sala.txt
+echo Yfirstjorn > C:\Gögn\Yfirstjorn\Yfirstjorn.txt
+echo Sameign > C:\Gögn\Sameign\Sameign.txt
+
+# Setja réttindi
+icacls C:\Gögn\Innkaup /grant Innkaup:F /inheritance:r
+icacls C:\Gögn\Sala /grant Sala:F /inheritance:r
+icacls C:\Gögn\Yfirstjorn /grant "Yfirstjórn":F /inheritance:r
+icacls C:\Gögn\Sameign /grant Allir:F /inheritance:r
+
+# Athuga réttindi
+icacls C:\Gögn\Innkaup
+icacls C:\Gögn\Sala
+icacls C:\Gögn\Yfirstjorn
+icacls C:\Gögn\Sameign
+PUNKTUR 4 – Öryggismál
+# Lágmark 8 stafir
+net accounts /minpwlen:8
+
+# Athuga
+net accounts
+
+# Loka fyrir allt inn
+Set-NetFirewallProfile -Profile Domain,Public,Private -DefaultInboundAction Block
+
+# Leyfa ping
+New-NetFirewallRule -DisplayName "Allow Ping" -Protocol ICMPv4 -IcmpType 8 -Direction Inbound -Action Allow
+
+# Athuga firewall
+Get-NetFirewallProfile
+Get-NetFirewallRule -DisplayName "Allow Ping"
